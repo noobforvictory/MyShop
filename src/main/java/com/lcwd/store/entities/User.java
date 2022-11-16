@@ -32,13 +32,5 @@ public class User {
 	private Date dob;
 
 	
-	
-
-	
-	
-	
-	
-	
-
 
 }
