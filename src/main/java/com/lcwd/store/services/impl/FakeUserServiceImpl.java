@@ -1,7 +1,9 @@
 package com.lcwd.store.services.impl;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.catalina.mapper.Mapper;
 import org.apache.commons.logging.LogFactory;
@@ -33,13 +35,30 @@ public class FakeUserServiceImpl implements UserService {
 		User user = mapper.map(userDto, User.class);
 	    boolean	result = users.add(user);
 	    logger.info("user is added: {}",result);
-		return null;
+		return mapper.map(user, UserDto.class);
 	}
 
 	@Override
 	public UserDto updateUser(UserDto userDto, int userDtoId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> updatedList = users.stream()
+			 .map(user -> {
+				 if(user.getId() == userDtoId) {
+					 user.setId(userDto.getId());
+					 user.setName(userDto.getName());
+					 user.setDob(userDto.getDob());
+					 user.setPassword(userDto.getPassword());
+					 user.setGender(userDto.getGender());
+					 user.setEmail(userDto.getEmail());
+					 user.setAbout(userDto.getAbout());
+					 return user;
+				 }else {
+					 return user;
+				 }
+			  }).collect(Collectors.toList());
+		users = updatedList;
+		
+			 
+		return userDto;
 	}
 
 	@Override
@@ -54,20 +73,30 @@ public class FakeUserServiceImpl implements UserService {
 
 	@Override
 	public List<UserDto> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<UserDto> userDtos = users.stream()
+				                      .map(user -> mapper.map(user,UserDto.class))
+				                      .collect(Collectors.toList());
+		return userDtos;
 	}
 
 	@Override
 	public void deleteUser(int userDtoId) {
-		// TODO Auto-generated method stub
+		List<User> newList = users.stream()
+		     .filter( user -> user.getId() != userDtoId )
+		     .collect( Collectors.toList() );
+		users = newList;
 		
 	}
 
 	@Override
 	public List<UserDto> searchUsers(String keywords) {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> list = users.stream()
+		     .filter(user -> user.getName().contains(keywords) )
+		     .collect(Collectors.toList());
+		List<UserDto> userDtos = list.stream()
+									 .map(user -> mapper.map(user,UserDto.class))
+									 .collect(Collectors.toList());
+		return userDtos;
 	}
 
 }

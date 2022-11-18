@@ -2,9 +2,25 @@ package com.lcwd.store.dtos;
 
 import java.sql.Date;
 
+import com.lcwd.store.entities.User;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Builder
 public class UserDto {
 
-private int id;
+
+	private int id;
 	
 	private String name;
 	
