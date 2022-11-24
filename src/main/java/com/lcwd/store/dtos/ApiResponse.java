@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Builder
 public class ApiResponse {
-private String message;
-private boolean success;
+	
+	private String message;
+	private boolean success;
 }

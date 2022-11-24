@@ -2,6 +2,8 @@ package com.lcwd.store.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.lcwd.store.dtos.ApiResponse;
@@ -28,7 +29,7 @@ public class UserController {
 	
 	//create
 	@PostMapping
-	public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto){
 		UserDto userDto2 = userService.addUser(userDto);
 		return new ResponseEntity<UserDto>(userDto2,HttpStatus.CREATED);
 	}
@@ -64,4 +65,10 @@ public class UserController {
 		return ResponseEntity.ok(userService.searchUsers(keywords));
 	}
 	
+	//method for handling exceptions
+//	@ExceptionHandler(ResourceNotFoundException.class)
+//	public ResponseEntity<ApiResponse> handleRunTimeException(RuntimeException e){
+//		return new ResponseEntity<ApiResponse>(ApiResponse.builder().message(e.getMessage()).success(false).build(),HttpStatus.NOT_FOUND);
+//		
+//	}
 }

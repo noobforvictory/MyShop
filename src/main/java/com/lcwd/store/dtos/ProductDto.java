@@ -1,4 +1,6 @@
-package com.lcwd.store.entities;
+package com.lcwd.store.dtos;
+
+import javax.validation.constraints.NotBlank;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,11 +13,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Product {
+
+public class ProductDto {
 
 	private int id;
+	
+	
 	private int quantity;
+	
+	@NotBlank(message = "message field cant be empty")
 	private String colour;
+	
+	@NotBlank(message = "message field cant be empty")
 	private String model;
+	
+
 	private int price;
+	
 }

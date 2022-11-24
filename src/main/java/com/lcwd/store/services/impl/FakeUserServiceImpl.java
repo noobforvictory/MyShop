@@ -1,12 +1,9 @@
 package com.lcwd.store.services.impl;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.catalina.mapper.Mapper;
-import org.apache.commons.logging.LogFactory;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,10 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.lcwd.store.dtos.UserDto;
 import com.lcwd.store.entities.User;
+import com.lcwd.store.exceptions.InvalidAgeException;
+import com.lcwd.store.exceptions.ResourceNotFoundException;
 import com.lcwd.store.services.UserService;
 
 @Service
-@Primary
+
 public class FakeUserServiceImpl implements UserService {
 
 	private List<User> users = new ArrayList<>();
@@ -32,6 +31,9 @@ public class FakeUserServiceImpl implements UserService {
 	@Override
 	public UserDto addUser(UserDto userDto) {
 		//Dto -> entity 
+//		if(userDto.getName().length()<3) {
+//			throw new InvalidAgeException("User name is invalid");
+//		}
 		User user = mapper.map(userDto, User.class);
 	    boolean	result = users.add(user);
 	    logger.info("user is added: {}",result);
@@ -67,7 +69,7 @@ public class FakeUserServiceImpl implements UserService {
 		User user1 = users.stream()
 				          .filter(user-> user.getId()==userDtoId)
 				          .findFirst()
-				          .orElseThrow(()-> new RuntimeException("user with given id not found"));
+				          .orElseThrow(()-> new ResourceNotFoundException("user with given id not found"));
 		return mapper.map(user1, UserDto.class);
 	}
 
