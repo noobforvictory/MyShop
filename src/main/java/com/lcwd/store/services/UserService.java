@@ -10,13 +10,13 @@ public interface UserService {
 	//add user
 	UserDto addUser(UserDto userDto);
 	//update
-	UserDto updateUser(UserDto userDto, int userDtoId);
+	UserDto updateUser(UserDto userDto, String userDtoId);
 	//get single
-	UserDto getUser(int userDtoId);
+	UserDto getUser(String userId);
 	//get all
 	List<UserDto> getAll();
 	//delete user
-	void deleteUser(int userDtoId);
+	void deleteUser(String userDtoId);
 	//search user
 	List<UserDto> searchUsers(String keywords);
 	

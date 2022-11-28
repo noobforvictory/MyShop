@@ -35,7 +35,7 @@ public class UserController {
 	}
 	//get single
 	@GetMapping("/{userId}")
-	public ResponseEntity<UserDto> getUser(@PathVariable int userId){
+	public ResponseEntity<UserDto> getUser(@PathVariable String userId){
 		UserDto userDto = userService.getUser(userId);
 		return ResponseEntity.ok(userDto);
 	}
@@ -47,14 +47,14 @@ public class UserController {
 	}
 	//delete
 	@DeleteMapping("/{userId}")
-	public ResponseEntity<ApiResponse> deleteUser(@PathVariable int userId){
+	public ResponseEntity<ApiResponse> deleteUser(@PathVariable String userId){
 		userService.deleteUser(userId);
 		return ResponseEntity.ok(ApiResponse.builder().message("user deleted").success(true).build());
 	}
 	
 	//update
 	@PutMapping("/{userId}")
-	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable int userId){
+	public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, @PathVariable String userId){
 		UserDto updateUser = userService.updateUser(userDto, userId);
 		return ResponseEntity.ok(updateUser);
 	}

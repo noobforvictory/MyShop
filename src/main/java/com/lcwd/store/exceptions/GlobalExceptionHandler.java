@@ -8,6 +8,7 @@ import javax.validation.ValidationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -15,6 +16,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import com.lcwd.store.dtos.ApiResponse;
 
@@ -54,7 +56,15 @@ public class GlobalExceptionHandler {
 		
 	}
 	
+	@ExceptionHandler(EmptyResultDataAccessException.class)
+	public ResponseEntity<ApiResponse> handleEmptyResultFromDatabase(EmptyResultDataAccessException e){
+		logger.info("Result is empty : {} ", e.getMessage());
+		return new ResponseEntity<ApiResponse>(ApiResponse.builder().message("Result is empty: Data does not exists").success(false).build(),HttpStatus.BAD_REQUEST);
+	}
 	
-	
+	@ExceptionHandler(MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<ApiResponse> handleTypeMissmatchException(MethodArgumentTypeMismatchException e){
+		return new ResponseEntity<ApiResponse>(ApiResponse.builder().message("type did not match, please enter int for id").success(false).build(),HttpStatus.BAD_REQUEST);
+	}
 	
 }

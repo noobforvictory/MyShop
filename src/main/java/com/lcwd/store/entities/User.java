@@ -1,6 +1,14 @@
 package com.lcwd.store.entities;
 
 import java.sql.Date;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,9 +23,17 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 @Builder
+@Entity //important
+@Table(name = "jpa_users") //optional
+
 public class User {
-	private int id;
 	
+	@Id //important (specifies primary key)
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "user_id") //optional (it takes parameter name as column by default if name not provided)
+	private String id;
+	
+	@Column(name = "user_name",length = 100,nullable = false)
 	private String name;
 	
 	private String email;
@@ -29,7 +45,6 @@ public class User {
 	private String gender;
 	
 	private Date dob;
-
 	
 
 }
