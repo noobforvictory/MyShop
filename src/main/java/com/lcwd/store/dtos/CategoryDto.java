@@ -1,8 +1,7 @@
-package com.lcwd.store.entities;
+package com.lcwd.store.dtos;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,12 +17,10 @@ import lombok.ToString;
 @ToString
 @Builder
 @Table
-@Entity
-public class Category {
+public class CategoryDto {
 
-	@Id
 	private String id;
-	
+
+	@Size(min=5,max=15, message = "Username must be between 5 to 15 chars")
 	private String categoryName;
-	
 }
