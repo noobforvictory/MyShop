@@ -67,4 +67,11 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<ApiResponse>(ApiResponse.builder().message("type did not match, please enter int for id").success(false).build(),HttpStatus.BAD_REQUEST);
 	}
 	
+	@ExceptionHandler(BadRequestException.class)
+	public ResponseEntity<ApiResponse> handleBadRequestException(BadRequestException e){
+		logger.info("Result is empty : {} ", e.getMessage());
+		return new ResponseEntity<ApiResponse>(ApiResponse.builder().message(e.getMessage()).success(false).build(),HttpStatus.BAD_REQUEST);
+	}
+	
+	
 }

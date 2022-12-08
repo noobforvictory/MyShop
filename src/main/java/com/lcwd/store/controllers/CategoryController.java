@@ -18,8 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.lcwd.store.dtos.ApiResponse;
 import com.lcwd.store.dtos.CategoryDto;
-
+import com.lcwd.store.dtos.ProductDto;
 import com.lcwd.store.services.CategoryServices;
+import com.lcwd.store.services.ProductServices;
 
 @RestController
 @RequestMapping("/category")
@@ -28,11 +29,23 @@ public class CategoryController {
 	@Autowired
 	private CategoryServices categoryServices;
 
+	@Autowired
+	private ProductServices productServices;
+
 	// create
 	@PostMapping
 	public ResponseEntity<CategoryDto> addEntity(@Valid @RequestBody CategoryDto categoryDto) {
 		CategoryDto addCategoryDto = categoryServices.addCategoryDto(categoryDto);
 		return new ResponseEntity<CategoryDto>(addCategoryDto, HttpStatus.CREATED);
+	}
+
+	// create product
+	@PostMapping("/{categoryId}/products")
+	public ResponseEntity<ProductDto> createProuct(@Valid @RequestBody ProductDto productDto,
+			@PathVariable String categoryId) {
+
+		ProductDto productDto2 = productServices.addProduct(productDto, categoryId);
+		return new ResponseEntity<ProductDto>(productDto2, HttpStatus.CREATED);
 	}
 
 	// get all
@@ -56,6 +69,13 @@ public class CategoryController {
 		CategoryDto categoryDto2 = categoryServices.updateCategoryDto(categoryDto, categoryId);
 
 		return ResponseEntity.ok(categoryDto2);
+	}
+
+	// update category
+	@PostMapping("/{categoryId}/products/{productId}")
+	public ResponseEntity<ProductDto> updateCategory(@PathVariable String categoryId, @PathVariable String productId) {
+		ProductDto updateProductCategory = productServices.updateProductCategory(categoryId, productId);
+		return ResponseEntity.ok(updateProductCategory);
 	}
 
 	// delete

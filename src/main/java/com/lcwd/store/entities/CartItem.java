@@ -1,37 +1,41 @@
 package com.lcwd.store.entities;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 @Builder
 @Entity
-public class Product {
-
+@Table(name = "jpa_cart_item")
+public class CartItem {
+	
 	@Id
-	private String id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int cartItemId;
 	
 	private int quantity;
 	
-	private String colour;
+	private int totalPrice;
 	
-	private String model;
+	@OneToOne
+	private Product product;
 	
-	private int price;
+	@ManyToOne
+	private Cart cart;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Category category;
+
 }

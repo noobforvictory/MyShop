@@ -9,7 +9,11 @@ public interface ProductServices {
 
 	ProductDto addProduct(ProductDto productDto);
 	
+	ProductDto addProduct(ProductDto productDto,String categoryId);
+	
 	ProductDto updateProduct(ProductDto productDto,String productDtoId);
+	
+	ProductDto updateProductCategory(String categoryId,String productDtoId);
 	
 	void deleteProduct(String  productDtoId);
 	

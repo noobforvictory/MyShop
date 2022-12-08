@@ -9,13 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.lcwd.store.dtos.ProductDto;
+import com.lcwd.store.entities.Category;
 import com.lcwd.store.entities.Product;
 import com.lcwd.store.exceptions.ResourceNotFoundException;
+import com.lcwd.store.repository.CategoryRepository;
 import com.lcwd.store.repository.ProductRepository;
 import com.lcwd.store.services.ProductServices;
 
 @Service
 public class ProductServicesJpaImpl implements ProductServices {
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -74,6 +79,27 @@ public class ProductServicesJpaImpl implements ProductServices {
 		List<ProductDto> list = productInRange.stream().map(product -> mapper.map(product, ProductDto.class))
 				.collect(Collectors.toList());
 		return list;
+	}
+
+	@Override
+	public ProductDto addProduct(ProductDto productDto, String categoryId) {
+		
+		// get the category of given id
+		Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("category with the given id not found"));
+		Product product = mapper.map(productDto, Product.class);
+		product.setCategory(category);
+		product.setId(UUID.randomUUID().toString());
+		Product savedProduct = productRepository.save(product);
+		return mapper.map(savedProduct, ProductDto.class);
+	}
+
+	@Override
+	public ProductDto updateProductCategory(String categoryId, String productDtoId) {
+		Product product = productRepository.findById(productDtoId).orElseThrow(() -> new ResourceNotFoundException("product with given id not found"));
+		Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new ResourceNotFoundException("category with given id not found"));
+		product.setCategory(category);
+		Product product2 = productRepository.save(product);
+		return mapper.map(product2, ProductDto.class);
 	}
 
 }
