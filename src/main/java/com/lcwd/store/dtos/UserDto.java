@@ -1,6 +1,8 @@
 package com.lcwd.store.dtos;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -8,6 +10,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.lcwd.store.entities.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -45,4 +48,6 @@ public class UserDto {
 
     @JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dob;
+    
+    private Set<RoleDto> roles = new HashSet<>();
 }

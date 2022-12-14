@@ -1,5 +1,8 @@
 package com.lcwd.store.exceptions;
 
+import lombok.Builder;
+
+@Builder
 public class BadRequestException extends RuntimeException {
 	
 	public BadRequestException() {

@@ -4,14 +4,19 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.lcwd.store.dtos.UserDto;
+import com.lcwd.store.entities.Role;
 import com.lcwd.store.entities.User;
 import com.lcwd.store.exceptions.ResourceNotFoundException;
+import com.lcwd.store.repository.RoleRepo;
 import com.lcwd.store.repository.UserRepository;
 import com.lcwd.store.services.UserService;
 
@@ -24,11 +29,23 @@ public class UserServiceJpaImpl implements UserService {
 
 	@Autowired
 	private ModelMapper mapper;
+	
+	@Autowired
+	private RoleRepo roleRepo;
+	
+	@Value("${user.normal.role.id}")
+	private String normalUserId;
 
 	@Override
 	public UserDto addUser(UserDto userDto) {
 		User user = mapper.map(userDto, User.class);
 		user.setId(UUID.randomUUID().toString());
+		
+		// get the user as a normal user:
+		
+		Role role = roleRepo.findById(normalUserId).get();
+		user.getRoles().add(role);
+		
 		User savedUser = userRepository.save(user);
 		UserDto savedUserDto = mapper.map(savedUser, UserDto.class);
 
